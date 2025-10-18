@@ -14,5 +14,14 @@ export const ServiceServices = {
         } catch (error: any) {
             throw new Error(error.response.data.message)
         }
+    },
+
+    async getAllByProvider(id: string): Promise<IServicesSavedDTO[]>{
+        try {
+            const {data} = await Api.get(`/services/provider/${id}`);
+            return data
+        } catch (error: any) {
+            throw new Error(error.response.data.message)
+        }
     }
 }

@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form"
 import { User, Mail, IdCard, Lock } from "lucide-react"
 import { PasswordFormField } from "@/components/form/PasswordFormField"
 import { SignUpFormData, signUpSchema } from "@/schemas/authSchema"
-import {zodResolver} from '@hookform/resolvers/zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuthStore } from "@/store/useAuthStore"
 
 
@@ -27,14 +27,14 @@ export default function RegistroPage() {
     resolver: zodResolver(signUpSchema)
   });
   const router = useRouter();
-  const {setUser} = useAuthStore()
+  const { setUser } = useAuthStore()
   const [userType, setUserType] = useState<"Client" | "Provider">("Client")
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
 
 
-  const onSubmit = async ({password,confirmpassword, email, fullname, nif}:SignUpFormData) => {
+  const onSubmit = async ({ password, confirmpassword, email, fullname, nif }: SignUpFormData) => {
     setError("")
 
     if (password !== confirmpassword) {
@@ -50,9 +50,14 @@ export default function RegistroPage() {
     setIsLoading(true)
 
     try {
-      const result = await AuthServices.signUp({fullname, email, password, role: userType, nif})
+      const result = await AuthServices.signUp({ fullname, email, password, role: userType, nif })
       setUser(result);
-      router.push("/servicos");
+      
+      if (result.role !== "PROVIDER") {
+        router.replace("/servicos");
+      }
+
+      router.replace("/servicos");
     } catch (err) {
       setError("Erro ao criar conta. Tente novamente.")
     } finally {

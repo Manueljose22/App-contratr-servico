@@ -38,7 +38,13 @@ export default function LoginPage() {
     try {
       const result = await AuthServices.signIn(data)
       setUser(result)
-      router.push("/servicos");
+      
+      if (result.role !== "PROVIDER") {
+        router.replace("/servicos");
+      }
+
+      router.replace("/servicos");
+
 
     } catch (err: any) {
       setError(err.message)

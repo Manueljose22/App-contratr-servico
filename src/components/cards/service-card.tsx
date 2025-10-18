@@ -3,6 +3,7 @@ import Image from "next/image"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { UserCircle } from "lucide-react"
 import { IServicesSavedDTO } from "@/services/services/types"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 
 interface ServiceCardProps {
@@ -17,7 +18,7 @@ export function ServiceCard({service}:ServiceCardProps ) {
         <CardHeader className="p-0">
           <div className="relative h-40 w-full overflow-hidden bg-muted">
             <Image
-              src={"/placeholder.svg"}
+              src={"/service.png"}
               alt={service.name}
               fill
               className="object-cover"
@@ -30,7 +31,10 @@ export function ServiceCard({service}:ServiceCardProps ) {
           </div>
           <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{service.description}</p>
           <div className="flex items-center gap-2 mb-3">
-            <UserCircle />
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={"/user.png"} alt={service.provider.user.fullname} />
+              <AvatarFallback>{service.provider.user.fullname.charAt(0)}</AvatarFallback>
+            </Avatar>
             <span className="text-sm font-medium">{service.provider.user.fullname}</span>
           </div>
         </CardContent>
