@@ -16,6 +16,7 @@ import { User, Mail, IdCard, Lock } from "lucide-react"
 import { PasswordFormField } from "@/components/form/PasswordFormField"
 import { SignUpFormData, signUpSchema } from "@/schemas/authSchema"
 import {zodResolver} from '@hookform/resolvers/zod'
+import { useAuthStore } from "@/store/useAuthStore"
 
 
 
@@ -25,7 +26,8 @@ export default function RegistroPage() {
   const { handleSubmit, control, formState: { errors } } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema)
   });
-  const router = useRouter()
+  const router = useRouter();
+  const {setUser} = useAuthStore()
   const [userType, setUserType] = useState<"Client" | "Provider">("Client")
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -48,9 +50,9 @@ export default function RegistroPage() {
     setIsLoading(true)
 
     try {
-
       const result = await AuthServices.signUp({fullname, email, password, role: userType, nif})
-      router.push("/servicos")
+      setUser(result);
+      router.push("/servicos");
     } catch (err) {
       setError("Erro ao criar conta. Tente novamente.")
     } finally {
