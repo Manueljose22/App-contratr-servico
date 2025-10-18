@@ -4,10 +4,9 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 
 type User ={
-    id: string;
-    nome: string;
-    email: string;
-    role: 'Admin' | 'Vendedor';
+    userId: string;
+    name: string;
+    role: 'Client' | 'Provider';
     token: string;
 }
 

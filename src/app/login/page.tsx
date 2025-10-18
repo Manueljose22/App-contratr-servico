@@ -11,6 +11,8 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useAuthStore } from "@/store/useAuthStore"
+import { AuthServices } from "@/services/auth/authServices"
+
 
 
 
@@ -23,16 +25,19 @@ export default function LoginPage() {
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
     setIsLoading(true)
 
     try {
-    
-      router.push("/servicos")
-    } catch (err) {
-      setError("Erro ao fazer login. Verifique suas credenciais.")
+      const result = await AuthServices.signIn({email, password})
+      setUser(result)
+      router.push("/servicos");
+
+    } catch (err: any) {
+      setError(err.message)
     } finally {
       setIsLoading(false)
     }
