@@ -6,7 +6,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 type User ={
     userId: string;
     name: string;
-    role: 'Client' | 'Provider';
+    role: 'CLIENT' | 'PROVIDER';
     token: string;
 }
 
