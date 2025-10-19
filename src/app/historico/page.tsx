@@ -10,11 +10,11 @@ import { TabsMenu } from "@/components/tabsMenu/tabsMenu"
 
 
 
-
 export default function HistoricoPage() {
   const { user } = useAuthStore();
   const [transactions, setTransactions] = useState<IBookingSavedDTO[] | null>()
 
+  
   const loadHostory = async () => {
     try {
       const result = await BookingsServices.getAllByUser();
@@ -52,7 +52,7 @@ export default function HistoricoPage() {
     loadHostory();
   }, [])
 
-  
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

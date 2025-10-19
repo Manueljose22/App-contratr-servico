@@ -4,8 +4,6 @@ import { IBookingDTO, IBookingSavedDTO } from "./types";
 
 
 
-
-
 export const BookingsServices = {
 
     async getAllByUser(): Promise<IBookingSavedDTO[] | null>{

@@ -10,12 +10,7 @@ interface panelStatusProps {
 }
 
 
-
-
-
 export const PanelStatus = ({role, transactions}: panelStatusProps) => {
-  
-  
   const status = {
     total: transactions?.length,
     completed: transactions?.filter((t) => t.status === "COMPLETED").length,
@@ -24,7 +19,6 @@ export const PanelStatus = ({role, transactions}: panelStatusProps) => {
     totalSpent: transactions?.filter((t) => t.status === "CONFIRMED").reduce((sum, t) =>
       sum + t.service.provider.balance, transactions[0].service.provider.balance),
   }
-
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">

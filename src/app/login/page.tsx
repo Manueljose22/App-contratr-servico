@@ -72,7 +72,7 @@ export default function LoginPage() {
               className="space-y-2"
               name="email"
               control={control}
-              type="email"
+              type="text"
               icon={<Mail size={18} className="text-slate-500" />}
               error={errors.email}
             />
