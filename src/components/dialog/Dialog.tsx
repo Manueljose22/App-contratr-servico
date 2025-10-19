@@ -3,7 +3,7 @@ import { Dispatch } from "react";
 import { Button } from "../ui/button";
 
 
-interface DialogProps{
+export interface dialogProps{
     isDialogOpen: boolean;
     setIsDialogOpen: Dispatch<React.SetStateAction<boolean>>;
     confirmContract: () => void;
@@ -13,7 +13,7 @@ interface DialogProps{
 }
 
 
-export const DialogComponent = ({isDialogOpen, title,description, setIsDialogOpen,confirmContract}: DialogProps) => {
+export const DialogComponent = ({isDialogOpen, title,description, setIsDialogOpen,confirmContract}: dialogProps) => {
 
 
   return (

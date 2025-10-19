@@ -58,7 +58,7 @@ export default function HistoricoPage() {
       <Navbar />
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Histórico de Transações</h1>
+          <h1 className="text-2xl lg:text-3xl font-bold mb-2">Histórico de Transações</h1>
           <p className="text-muted-foreground text-lg">Acompanhe todos os seus serviços contratados</p>
         </div>
 

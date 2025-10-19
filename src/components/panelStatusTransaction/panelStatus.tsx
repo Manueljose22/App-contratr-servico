@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, CardContent } from '../ui/card'
-import { Calendar, DollarSign, User } from 'lucide-react'
+import { Briefcase, Calendar, DollarSign, User } from 'lucide-react'
 import { IBookingSavedDTO } from '@/services/bookings/types';
 
 
@@ -30,7 +30,7 @@ export const PanelStatus = ({role, transactions}: panelStatusProps) => {
               <p className="text-3xl font-bold">{status.total}</p>
             </div>
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <DollarSign className="h-6 w-6 text-primary" />
+              <Briefcase className="h-6 w-6 text-primary" />
             </div>
           </div>
         </CardContent>

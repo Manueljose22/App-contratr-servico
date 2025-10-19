@@ -1,6 +1,6 @@
 export type IServicesCreateDTO = {
     name: string;
-    description: string | null;
+    description: string;
     price: number;
     providerId: string;
 }

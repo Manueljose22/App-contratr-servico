@@ -2,12 +2,16 @@
 
 import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
-import { Loader2, Search } from "lucide-react"
+import { Loader2, Plus, Search } from "lucide-react"
 import { Navbar } from "@/components/layout/navbar"
 import { ServiceServices } from "@/services/services/ServiceServices"
 import { IServicesSavedDTO } from "@/services/services/types"
 import { ServiceCard } from "@/components/cards/service-card"
 import { useProtectRoute } from "@/hooks/useProtectRoute"
+import { useAuthStore } from "@/store/useAuthStore"
+import { Button } from "@/components/ui/button"
+import { DialogComponent } from "@/components/dialog/Dialog"
+import { FormModal } from "@/components/formModal/formModal"
 
 
 
@@ -16,23 +20,30 @@ export default function ServicosPage() {
   const [search, setSearch] = useState("")
   const [services, setServices] = useState<IServicesSavedDTO[]>([])
   const [filteredServices, setFilteredServices] = useState<IServicesSavedDTO[]>([])
-  const {isChecking} = useProtectRoute("CLIENT");
+  const { isChecking } = useProtectRoute();
+  const { user } = useAuthStore()
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  
+
 
 
   useEffect(() => {
+
     const loadServices = async () => {
       try {
-        const result = await ServiceServices.getAll()
+        const result = user?.role === "CLIENT" ?
+          await ServiceServices.getAll() :
+          await ServiceServices.getAllByProvider(user?.userId!);
         setServices(result)
-        setFilteredServices(result) 
+        setFilteredServices(result)
+
       } catch (error: any) {
         console.error("Erro ao carregar serviços:", error.message)
-      } 
+      }
     }
-
     loadServices()
+
+
   }, [])
 
   useEffect(() => {
@@ -41,7 +52,7 @@ export default function ServicosPage() {
       return
     }
 
-  
+
     const filtered = services.filter((service) =>
       service.name.toLowerCase().includes(search.toLowerCase()) ||
       service.description?.toLowerCase().includes(search.toLowerCase()) ||
@@ -51,27 +62,35 @@ export default function ServicosPage() {
     setFilteredServices(filtered)
   }, [search, services])
 
-  
+
   if (isChecking) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-         <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     )
   }
 
-  
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2 text-balance">
-            Encontre o serviço perfeito
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Conecte-se com profissionais qualificados para suas necessidades
-          </p>
+        <div className="mb-8 flex justify-between">
+          <div>
+            <h1 className="text-2xl lg:text-3xl font-bold mb-2 text-balance">
+              {user?.role !== "PROVIDER" ? "Encontre o serviço perfeito" : "Seus serviços"}
+            </h1>
+
+            {user?.role !== "PROVIDER" && (
+              <p className="text-muted-foreground text-lg">
+                Conecte-se com profissionais qualificados para suas necessidades
+              </p>)
+            }
+          </div>
+          <Button onClick={()=> setIsDialogOpen(true)}>
+            <Plus /> Adicionar
+          </Button>
         </div>
 
         <div className="flex flex-col md:flex-row gap-4 mb-8">
@@ -110,6 +129,8 @@ export default function ServicosPage() {
           </>
         )}
       </main>
+
+      <FormModal isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen}/>
     </div>
   )
 }
