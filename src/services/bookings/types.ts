@@ -1,8 +1,10 @@
 
-export type IBbookingCreateDTO = {
+export type IBookingDTO = {
     clientId: string;
     serviceId: string;
     providerId: string;
+    bookingId: string;
+    dateBooking: Date
     price: number;
 }
 
@@ -13,10 +15,16 @@ export type IBookingSavedDTO = {
             user: {
                 fullname: string;
             };
+            balance: number;
         };
         id: string;
         name: string;
         description: string | null;
+    }
+    client: {
+        user: {
+            fullname: string;
+        };
     }
     id: string;
     price: number;
@@ -25,5 +33,6 @@ export type IBookingSavedDTO = {
     updatedAt: Date;
     clientId: string;
     serviceId: string;
+    dateBooking: Date;
     providerId: string;
 }

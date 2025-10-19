@@ -31,20 +31,19 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
 
 
-  const onSubmit = async (data:SignInFormData) => {
+  const onSubmit = async (data: SignInFormData) => {
     setError("")
     setIsLoading(true)
 
     try {
       const result = await AuthServices.signIn(data)
       setUser(result)
-      
-      if (result.role !== "PROVIDER") {
+
+      if (result.role === "CLIENT") {
         router.replace("/servicos");
+      } else {
+        router.replace("/historico");
       }
-
-      router.replace("/servicos");
-
 
     } catch (err: any) {
       setError(err.message)

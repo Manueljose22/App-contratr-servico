@@ -53,11 +53,12 @@ export default function RegistroPage() {
       const result = await AuthServices.signUp({ fullname, email, password, role: userType, nif })
       setUser(result);
       
-      if (result.role !== "PROVIDER") {
+       if (result.role === "CLIENT") {
         router.replace("/servicos");
+      } else {
+        router.replace("/historico");
       }
-
-      router.replace("/servicos");
+      
     } catch (err) {
       setError("Erro ao criar conta. Tente novamente.")
     } finally {

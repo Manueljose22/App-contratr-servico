@@ -4,20 +4,20 @@ export type ISignUpDTO = {
     email: string;
     password: string;
     nif: string;
-    role: 'Client' | 'Provider';
+    role: 'CLIENT' | 'PROVIDER';
 }
 
 
-export type ISignInDTO ={
+export type ISignInDTO = {
     email: string;
     password: string;
 }
 
 
-export type IUserAuth ={
+export type IUserAuth = {
     userId: string;
     name: string;
-    role: 'Client' | 'Provider';
+    role: 'CLIENT' | 'PROVIDER';
     token: string;
 }
 

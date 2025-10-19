@@ -1,5 +1,5 @@
 import { Api } from "@/utils/Api";
-import { IBbookingCreateDTO, IBookingSavedDTO } from "./types";
+import { IBookingDTO, IBookingSavedDTO } from "./types";
 
 
 
@@ -7,6 +7,15 @@ import { IBbookingCreateDTO, IBookingSavedDTO } from "./types";
 
 
 export const BookingsServices = {
+
+    async getAllByUser(): Promise<IBookingSavedDTO[] | null>{
+        try {
+            const {data} = await Api.get(`/bookings/user`);
+            return data
+        } catch (error: any) {
+            throw new Error(error.response.data.message)
+        }
+    },
 
     async getAll(): Promise<IBookingSavedDTO[]>{
         try {
@@ -17,7 +26,7 @@ export const BookingsServices = {
         }
     },
 
-    async create(dataBooking: IBbookingCreateDTO): Promise<void>{
+    async create(dataBooking: Omit <IBookingDTO, "price">): Promise<void>{
          try {
             const {data} = await Api.post("/bookings", dataBooking );
             return data
@@ -26,18 +35,9 @@ export const BookingsServices = {
         }
     },
 
-    async cancel(id: string): Promise<void>{
+    async updateBooking(dataBooking: {bookingId: string, status: string, dataBooking?: Date }): Promise<void>{
          try {
-            const {data} = await Api.put(`/bookings/cancel/${id}`);
-            return data
-        } catch (error: any) {
-            throw new Error(error.response.data.message)
-        }
-    },
-
-    async update(id: string, dataBooking: IBbookingCreateDTO): Promise<void>{
-         try {
-            const {data} = await Api.put(`/bookings/cancel/${id}`);
+            const {data} = await Api.put(`/bookings/${dataBooking.bookingId}`, dataBooking);
             return data
         } catch (error: any) {
             throw new Error(error.response.data.message)
@@ -45,12 +45,3 @@ export const BookingsServices = {
     }
 }
 
-
-
-
-// router.post('/bookings/'
-// router.get('/bookings'
-// router.get('/bookings/user'
-// router.get('/bookings/:id'
-// router.put('/bookings/cancel/:id'
-// router.put('/bookings/:id'
