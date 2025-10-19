@@ -1,7 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { UserCircle } from "lucide-react"
 import { IServicesSavedDTO } from "@/services/services/types"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 

@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 
 interface DialogProps{
     isDialogOpen: boolean;
-    setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsDialogOpen: Dispatch<React.SetStateAction<boolean>>;
     confirmContract: () => void;
     title: string;
     description: string
