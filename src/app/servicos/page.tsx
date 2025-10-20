@@ -6,23 +6,26 @@ import { Loader2, Plus, Search } from "lucide-react"
 import { Navbar } from "@/components/layout/navbar"
 import { ServiceServices } from "@/services/services/ServiceServices"
 import { IServicesSavedDTO } from "@/services/services/types"
-import { ServiceCard } from "@/components/cards/service-card"
+import { ServiceCard } from "@/components/serviceCard/service-card"
 import { useProtectRoute } from "@/hooks/useProtectRoute"
 import { useAuthStore } from "@/store/useAuthStore"
 import { Button } from "@/components/ui/button"
-import { DialogComponent } from "@/components/dialog/Dialog"
 import { FormModal } from "@/components/formModal/formModal"
+import { ServiceListItem } from "@/components/serviceCard/serviceListItem"
+import { useRouter } from "next/navigation"
 
 
 
 
 export default function ServicosPage() {
   const [search, setSearch] = useState("")
+  const router = useRouter()
   const [services, setServices] = useState<IServicesSavedDTO[]>([])
   const [filteredServices, setFilteredServices] = useState<IServicesSavedDTO[]>([])
   const { isChecking } = useProtectRoute();
   const { user } = useAuthStore()
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isReload, setIsReload] = useState(false)
 
 
 
@@ -44,7 +47,7 @@ export default function ServicosPage() {
     loadServices()
 
 
-  }, [])
+  }, [router, isReload])
 
   useEffect(() => {
     if (!search.trim()) {
@@ -88,9 +91,13 @@ export default function ServicosPage() {
               </p>)
             }
           </div>
-          <Button onClick={()=> setIsDialogOpen(true)}>
+          { user?.role !== "CLIENT" &&(
+            <Button onClick={() => setIsDialogOpen(true)}>
             <Plus /> Adicionar
           </Button>
+          )
+
+          }
         </div>
 
         <div className="flex flex-col md:flex-row gap-4 mb-8">
@@ -121,16 +128,41 @@ export default function ServicosPage() {
                   : "serviços encontrados"}
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredServices.map((service) => (
-                <ServiceCard key={service.id} service={service} />
-              ))}
+
+            <div>
+              {user?.role === "CLIENT" ?
+                (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredServices.map((service) => (
+                      <ServiceCard key={service.id} service={service} />
+                    ))}
+                  </div>
+                ) :
+                (
+                  <div className="space-y-6">
+                    {filteredServices.map((service) => (
+                      <ServiceListItem
+                        key={service.id}
+                        service={service}
+                        setIsReload={() => setIsReload(!isReload)}
+                      />
+                    ))}
+                  </div>
+                )
+              }
             </div>
+
+
+
           </>
         )}
       </main>
 
-      <FormModal isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen}/>
+      <FormModal
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        setIsReload={() => setIsReload(!isReload)}
+      />
     </div>
   )
 }

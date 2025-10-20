@@ -21,7 +21,7 @@ import { useProtectRoute } from "@/hooks/useProtectRoute"
 
 
 export default function PrestadorPage() {
-  const {isChecking} = useProtectRoute("CLIENT");
+  const { isChecking } = useProtectRoute("CLIENT");
   const params = useParams()
   const router = useRouter()
   const { user } = useAuthStore()
@@ -40,7 +40,7 @@ export default function PrestadorPage() {
 
   const handleContractService = async (serviceId: string, price: number) => {
     if (!user) {
-      router.push("/login")
+      router.replace("/login")
       return
     }
 
@@ -68,10 +68,10 @@ export default function PrestadorPage() {
     loadServicesProvider()
   }, [params.id])
 
-   if (isChecking) {
+  if (isChecking) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-         <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     )
   }

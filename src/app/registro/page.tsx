@@ -7,7 +7,6 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { AuthServices } from "@/services/auth/authServices"
 import { FormField } from "@/components/form/FormField";
@@ -17,6 +16,7 @@ import { PasswordFormField } from "@/components/form/PasswordFormField"
 import { SignUpFormData, signUpSchema } from "@/schemas/authSchema"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuthStore } from "@/store/useAuthStore"
+import { AlertMessage } from "@/components/alertMessage/alert"
 
 
 
@@ -28,7 +28,7 @@ export default function RegistroPage() {
   });
   const router = useRouter();
   const { setUser } = useAuthStore()
-  const [userType, setUserType] = useState<"Client" | "Provider">("Client")
+  const [userType, setUserType] = useState<"CLIENT" | "PROVIDER">("CLIENT")
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -75,12 +75,7 @@ export default function RegistroPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-
+            <AlertMessage message={error} />
             <FormField
               label="Nome completo"
               className="space-y-2"
@@ -131,7 +126,7 @@ export default function RegistroPage() {
 
             <div className="space-y-3">
               <Label>Tipo de conta</Label>
-              <RadioGroup value={userType} onValueChange={(value) => setUserType(value as "Client" | "Provider")}>
+              <RadioGroup value={userType} onValueChange={(value) => setUserType(value as "CLIENT" | "PROVIDER")}>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="client" id="Client" />
                   <Label htmlFor="client" className="font-normal cursor-pointer">

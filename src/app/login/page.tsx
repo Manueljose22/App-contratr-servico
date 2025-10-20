@@ -16,6 +16,9 @@ import { SignInFormData, signInSchema } from "@/schemas/authSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Lock, Mail } from "lucide-react"
 import { FormField } from "@/components/form/FormField"
+import { useToast } from "@/components/ui/use-toast"
+
+
 
 
 
@@ -25,6 +28,7 @@ export default function LoginPage() {
   const { handleSubmit, control, formState: { errors } } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema)
   });
+  const { toast } = useToast()
   const router = useRouter()
   const { setUser } = useAuthStore();
   const [error, setError] = useState("")
@@ -38,6 +42,11 @@ export default function LoginPage() {
     try {
       const result = await AuthServices.signIn(data)
       setUser(result)
+      
+      toast({
+      title: "Login efetuado!",
+      description: "Bem-vindo de volta 👋",
+    })
 
       if (result.role === "CLIENT") {
         router.replace("/servicos");

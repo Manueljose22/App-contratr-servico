@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { dialogProps } from '../dialog/Dialog'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog'
 import { Button } from '../ui/button'
 import { FormField } from '../form/FormField'
@@ -9,24 +8,29 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ServiceServices } from '@/services/services/ServiceServices'
 import { useAuthStore } from '@/store/useAuthStore'
 import { Loader2 } from 'lucide-react'
+import { AlertMessage } from '../alertMessage/alert'
 
 
-interface formModalProps{
-     isDialogOpen: boolean;
+interface formModalProps {
+    isDialogOpen: boolean;
     setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsReload: React.Dispatch<React.SetStateAction<boolean>>;
+
 }
 
 
 
-export const FormModal = ({isDialogOpen, setIsDialogOpen}: formModalProps) => {
-    const {user} = useAuthStore();
+export const FormModal = ({ isDialogOpen, setIsDialogOpen, setIsReload }: formModalProps) => {
+    const { user } = useAuthStore();
     const [isLoading, setIsloading] = useState<boolean>(false)
     const { control, handleSubmit, formState: { errors } } = useForm<CreateServiceFormData>({
         resolver: zodResolver(createServiceSchema)
     })
+    const [message, setMessage] = useState<string | null>(null);
 
-    const createService = async (data:CreateServiceFormData ) =>{
-        
+
+
+    const createService = async (data: CreateServiceFormData) => {
         try {
             setIsloading(true);
 
@@ -38,10 +42,11 @@ export const FormModal = ({isDialogOpen, setIsDialogOpen}: formModalProps) => {
             });
 
             setIsDialogOpen(false)
+            setIsReload(true)
 
         } catch (error: any) {
-            console.log(error.message);
-        } finally{
+            setMessage(error.message);
+        } finally {
             setIsloading(false)
         }
     }
@@ -52,7 +57,7 @@ export const FormModal = ({isDialogOpen, setIsDialogOpen}: formModalProps) => {
                 <DialogHeader>
                     <DialogTitle>Criar Serviço</DialogTitle>
                 </DialogHeader>
-
+                <AlertMessage message={message} />
                 <div>
                     <FormField
                         className='space-y-2'

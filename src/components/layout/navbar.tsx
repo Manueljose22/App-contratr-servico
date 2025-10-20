@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
-import { LogOut, User, History, Briefcase } from "lucide-react"
+import { LogOut, History, Briefcase } from "lucide-react"
 import { useAuthStore } from "@/store/useAuthStore"
 
 
@@ -17,7 +17,7 @@ export function Navbar() {
 
   const handleLogout = () => {
     logout()
-    router.push("/login")
+    router.replace("/login")
   }
 
   const navLinks = [
@@ -75,14 +75,6 @@ export function Navbar() {
                       <span>Serviços</span>
                     </Link>
                   </DropdownMenuItem>
-                  {user.role === "PROVIDER" && (
-                    <DropdownMenuItem asChild>
-                      <Link href={`/prestador/${user.userId}`} className="cursor-pointer">
-                        <User className="mr-2 h-4 w-4" />
-                        <span>Meu Perfil</span>
-                      </Link>
-                    </DropdownMenuItem>
-                  )}
                   <DropdownMenuItem asChild>
                     <Link href="/historico" className="cursor-pointer">
                       <History className="mr-2 h-4 w-4" />
