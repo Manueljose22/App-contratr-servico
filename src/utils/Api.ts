@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = (import.meta as any).env?.VITE_API_URL;
+
 
 export const Api = axios.create({
   baseURL: "https://api-reservas-2jc7.onrender.com",
