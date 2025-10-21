@@ -6,39 +6,51 @@ import { IBookingDTO, IBookingSavedDTO } from "./types";
 
 export const BookingsServices = {
 
-    async getAllByUser(): Promise<IBookingSavedDTO[] | null>{
+    async getAllByUser(): Promise<IBookingSavedDTO[] | null> {
         try {
-            const {data} = await Api.get(`/bookings/user`);
+            const { data } = await Api.get(`/bookings/user`);
             return data
         } catch (error: any) {
-            throw new Error(error.response.data.message)
+            if (error.response && error.response.data) {
+                throw new Error(error.response.data.message);
+            }
+            throw new Error("Ocorreu um erro. Tente novamente mais tarde.");
         }
     },
 
-    async getAll(): Promise<IBookingSavedDTO[]>{
+    async getAll(): Promise<IBookingSavedDTO[]> {
         try {
-            const {data} = await Api.get("/bookings");
+            const { data } = await Api.get("/bookings");
             return data
         } catch (error: any) {
-            throw new Error(error.response.data.message)
+            if (error.response && error.response.data) {
+                throw new Error(error.response.data.message);
+            }
+            throw new Error("Ocorreu um erro. Tente novamente mais tarde.");
         }
     },
 
-    async create(dataBooking: Omit <IBookingDTO, "bookingId">): Promise<void>{
-         try {
-            const {data} = await Api.post("/bookings", dataBooking );
+    async create(dataBooking: Omit<IBookingDTO, "bookingId">): Promise<void> {
+        try {
+            const { data } = await Api.post("/bookings", dataBooking);
             return data
         } catch (error: any) {
-            throw new Error(error.response.data.message)
+            if (error.response && error.response.data) {
+                throw new Error(error.response.data.message);
+            }
+            throw new Error("Ocorreu um erro. Tente novamente mais tarde.");
         }
     },
 
-    async updateBooking(dataBooking: {bookingId: string, status: string, dataBooking?: Date }): Promise<void>{
-         try {
-            const {data} = await Api.put(`/bookings/${dataBooking.bookingId}`, dataBooking);
+    async updateBooking(dataBooking: { bookingId: string, status: string, dataBooking?: Date }): Promise<void> {
+        try {
+            const { data } = await Api.put(`/bookings/${dataBooking.bookingId}`, dataBooking);
             return data
         } catch (error: any) {
-            throw new Error(error.response.data.message)
+            if (error.response && error.response.data) {
+                throw new Error(error.response.data.message);
+            }
+            throw new Error("Ocorreu um erro. Tente novamente mais tarde.");
         }
     }
 }

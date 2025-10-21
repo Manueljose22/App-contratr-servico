@@ -13,7 +13,10 @@ export const AuthServices = {
             const {data} = await Api.post("/auth/signUp", dataUser);
             return data;
         } catch (error: any) {
-            throw new Error(error.response.data.message)
+            if (error.response && error.response.data) {
+                throw new Error(error.response.data.message);
+            }
+            throw new Error("Ocorreu um erro. Tente novamente mais tarde.");
         }
     },
 
@@ -22,7 +25,10 @@ export const AuthServices = {
             const {data} = await Api.post("/auth/signIn", dataUser);
             return data;
         } catch (error: any) {
-            throw new Error(error.response.data.message)
+            if (error.response && error.response.data) {
+                throw new Error(error.response.data.message);
+            }
+            throw new Error("Ocorreu um erro. Tente novamente mais tarde.");
         }
     },
 
@@ -31,7 +37,10 @@ export const AuthServices = {
             const {data} = await Api.get("/users/profile");
             return data;
         } catch (error: any) {
-            throw new Error(error.response.data.message)
+            if (error.response && error.response.data) {
+                throw new Error(error.response.data.message);
+            }
+            throw new Error("Ocorreu um erro. Tente novamente mais tarde.");
         }
     }
 }
