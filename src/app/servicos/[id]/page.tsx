@@ -11,6 +11,7 @@ import { IServicesSavedDTO } from "@/services/services/types";
 import { useAuthStore } from "@/store/useAuthStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -103,7 +104,9 @@ export default function UpdateServicePage() {
                     <CardFooter className="flex space-y-2  justify-end">
                         <div className="flex gap-2 items-center">
                             <Button variant="outline">
-                                Cancelar
+                                <Link href={"/servicos"}>
+                                    Cancelar
+                                </Link>
                             </Button>
                             <Button onClick={handleSubmit(updateSerice)} disabled={isLoading ? true : false}>
                                 {isLoading ? <Loader2 className="w-8 h-8 animate-spin text-white" /> : 'Actualizar'}
