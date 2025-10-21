@@ -43,11 +43,6 @@ export default function LoginPage() {
       const result = await AuthServices.signIn(data)
       setUser(result)
       
-      toast({
-      title: "Login efetuado!",
-      description: "Bem-vindo de volta 👋",
-    })
-
       if (result.role === "CLIENT") {
         router.replace("/servicos");
       } else {

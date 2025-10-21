@@ -30,7 +30,6 @@ export default function UpdateServicePage() {
         resolver: zodResolver(createServiceSchema)
     })
 
-    const { user } = useAuthStore();
     const [isLoading, setIsloading] = useState<boolean>(false)
     const [message, setMessage] = useState<string | null>(null);
 
