@@ -28,6 +28,7 @@ export function FormField({placeholder,className,type = "text",control,name,rule
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               {...rest}
+              id={name}
               className="border-none focus-visible:ring-0 focus-visible:ring-transparent focus:border-transparent shadow-none"
               placeholder={placeholder}
               onFocus={() => {
@@ -49,7 +50,11 @@ export function FormField({placeholder,className,type = "text",control,name,rule
         />
       </div>
 
-      {error && <small className="text-small text-red-400">{error.message}</small>}
+      {error && (
+        <small className="text-small text-red-400">
+          {error?.message}
+        </small>
+      )}
     </div>
   );
 }

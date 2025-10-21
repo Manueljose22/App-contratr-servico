@@ -15,7 +15,7 @@ export function PasswordFormField({placeholder,className,type = "text",control,n
 
   return (
     <div className={className}>
-      {label && <Label className="mb-2 text-text-light">{label}</Label>}
+      {label && <Label htmlFor={name} className="mb-2 text-text-light">{label}</Label>}
 
       <div
         className={` bg-background px-2 rounded-lg flex flex-row items-center ${
@@ -30,6 +30,7 @@ export function PasswordFormField({placeholder,className,type = "text",control,n
           rules={rules}
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
+            id={name}
               className="border-none focus-visible:ring-0 focus-visible:ring-transparent focus:border-transparent shadow-none"
               placeholder={placeholder}
               onFocus={() => {
@@ -59,7 +60,11 @@ export function PasswordFormField({placeholder,className,type = "text",control,n
         </Button>
       </div>
 
-      {error && <p className="text-sm text-red-400 mt-1">{error.message}</p>}
+      {error && (
+        <p className="text-sm text-red-400 mt-1">
+          {error?.message}
+        </p>
+      )}
     </div>
   );
 }

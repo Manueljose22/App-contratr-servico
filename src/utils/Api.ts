@@ -2,7 +2,7 @@ import axios from 'axios'
 
 
 export const Api = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: 'https://api-reservas-2jc7.onrender.com',
   timeout: 5000
 })
 
