@@ -59,8 +59,8 @@ export default function RegistroPage() {
         router.replace("/historico");
       }
       
-    } catch (err) {
-      setError("Erro ao criar conta. Tente novamente.")
+    } catch (err: any) {
+      setError(err.message)
     } finally {
       setIsLoading(false)
     }
@@ -128,14 +128,14 @@ export default function RegistroPage() {
               <Label>Tipo de conta</Label>
               <RadioGroup value={userType} onValueChange={(value) => setUserType(value as "CLIENT" | "PROVIDER")}>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="client" id="Client" />
-                  <Label htmlFor="client" className="font-normal cursor-pointer">
+                  <RadioGroupItem value="CLIENT" id="CLIENT" />
+                  <Label htmlFor="CLIENT" className="font-normal cursor-pointer">
                     Cliente - Quero contratar serviços
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="Provider" id="Crovider" />
-                  <Label htmlFor="provider" className="font-normal cursor-pointer">
+                  <RadioGroupItem value="PROVIDER" id="PROVIDER" />
+                  <Label htmlFor="PROVIDER" className="font-normal cursor-pointer">
                     Prestador - Quero oferecer serviços
                   </Label>
                 </div>

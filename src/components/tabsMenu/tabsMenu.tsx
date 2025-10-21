@@ -65,13 +65,15 @@ export const TabsMenu = ({ role, transactions, handleUpdateStatus }: tabsMenuPro
                     <div className="flex flex-col md:items-end gap-2">
                       {transaction.status !== "CANCELED" && transaction.status !== "COMPLETED" && (
                         <div className="flex gap-1 mb-4">
-                          <Button
-                            onClick={() => handleUpdateStatus(transaction.id, "CONFIRMED")}
-                            variant={"ghost"}
-                            title="Concluir"
-                            className="cursor-pointer">
-                            <Check size={30} className="text-green-500" />
-                          </Button>
+                          {role !== "CLIENT" && (
+                            <Button
+                              onClick={() => handleUpdateStatus(transaction.id, "CONFIRMED")}
+                              variant={"ghost"}
+                              title="Concluir"
+                              className="cursor-pointer">
+                              <Check size={30} className="text-green-500" />
+                            </Button>)
+                          }
                           <Button onClick={() => handleUpdateStatus(transaction.id, "CANCELED")} title="Cancelar" variant={"ghost"} className="cursor-pointer">
                             <X size={30} className="text-red-500" />
                           </Button>

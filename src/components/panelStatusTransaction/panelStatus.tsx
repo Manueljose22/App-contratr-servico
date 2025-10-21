@@ -5,19 +5,24 @@ import { IBookingSavedDTO } from '@/services/bookings/types';
 
 
 interface panelStatusProps {
-  transactions: IBookingSavedDTO[] | null; 
+  transactions: IBookingSavedDTO[] | null;
   role: "PROVIDER" | "CLIENT";
 }
 
 
-export const PanelStatus = ({role, transactions}: panelStatusProps) => {
+export const PanelStatus = ({ role, transactions }: panelStatusProps) => {
   const status = {
     total: transactions?.length,
     completed: transactions?.filter((t) => t.status === "COMPLETED").length,
     canceled: transactions?.filter((t) => t.status === "CANCELED").length,
     pending: transactions?.filter((t) => t.status === "CONFIRMED").length,
-    totalSpent: transactions?.filter((t) => t.status === "CONFIRMED").reduce((sum, t) =>
-      sum + t.service.provider.balance, transactions[0].service.provider.balance),
+    totalSpent: transactions
+      ?.filter((t) => ["CONFIRMED", "COMPLETED"].includes(t.status))
+      .reduce((sum, t) => sum + (t.service?.price || 0), 0) ?? 0,
+
+    totalEarned: transactions
+      ?.filter((t) => t.status === "COMPLETED")
+      .reduce((sum, t) => sum + (t.service?.price || 0), 0) ?? 0
   }
 
   return (
@@ -69,7 +74,13 @@ export const PanelStatus = ({role, transactions}: panelStatusProps) => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground mb-1">{role !== "PROVIDER" ? 'Total Gasto' : 'Total Ganho'}</p>
-              <p className="text-2xl font-bold">{status?.totalSpent?.toFixed(2).replace(".", ",")}
+              <p className="text-2xl font-bold">
+                {role !== "PROVIDER" ? (
+                  status?.totalSpent?.toFixed(2).replace(".", ",")
+                ) : (
+                  status?.totalEarned?.toFixed(2).replace(".", ",")
+                )
+                }
               </p>
             </div>
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">

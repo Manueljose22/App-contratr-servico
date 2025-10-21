@@ -24,7 +24,7 @@ export const BookingsServices = {
         }
     },
 
-    async create(dataBooking: Omit <IBookingDTO, "bookingId" | "dateBooking">): Promise<void>{
+    async create(dataBooking: Omit <IBookingDTO, "bookingId">): Promise<void>{
          try {
             const {data} = await Api.post("/bookings", dataBooking );
             return data

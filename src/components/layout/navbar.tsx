@@ -7,13 +7,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import { LogOut, History, Briefcase } from "lucide-react"
 import { useAuthStore } from "@/store/useAuthStore"
+import { useEffect, useState } from "react"
+import { IUserSavedDTO } from "@/services/auth/types"
+import { AuthServices } from "@/services/auth/authServices"
 
 
 
 export function Navbar() {
   const { user, logout } = useAuthStore()
   const router = useRouter()
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const [profile, setProfile] = useState<IUserSavedDTO>()
 
   const handleLogout = () => {
     logout()
@@ -24,6 +28,17 @@ export function Navbar() {
     { href: "/servicos", label: "Serviços" },
     { href: "/historico", label: "Histórico" },
   ]
+
+  useEffect(()=>{
+    const loadProfile = async () =>{
+      const result = await AuthServices.profile();
+      setProfile(result)
+    }
+
+    loadProfile()
+  },[])
+
+
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
@@ -50,6 +65,10 @@ export function Navbar() {
 
           <div className="flex items-center gap-4">
             {user && (
+              <>
+              <p className="text-base font-medium"><small>Saldo: {user.role !== "PROVIDER" ?  
+                new Intl.NumberFormat("AOA", {style: "currency", currency: "AOA"}).format(profile?.client?.balance!) :
+                new Intl.NumberFormat("AOA", {style: "currency", currency: "AOA"}).format(profile?.provider?.balance!)}</small></p>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full">
@@ -88,6 +107,7 @@ export function Navbar() {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+              </>
             )}
           </div>
         </div>

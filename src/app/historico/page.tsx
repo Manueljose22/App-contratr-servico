@@ -12,9 +12,11 @@ import { TabsMenu } from "@/components/tabsMenu/tabsMenu"
 
 export default function HistoricoPage() {
   const { user } = useAuthStore();
-  const [transactions, setTransactions] = useState<IBookingSavedDTO[] | null>()
+  const [transactions, setTransactions] = useState<IBookingSavedDTO[] | null>();
+  const [isReload, setIsReload] = useState(false)
 
-  
+
+
   const loadHostory = async () => {
     try {
       const result = await BookingsServices.getAllByUser();
@@ -46,11 +48,12 @@ export default function HistoricoPage() {
         console.log("Erro ao concluir contratacao: ", error.message);
       }
     }
+    setIsReload(true)
   }
 
   useEffect(() => {
     loadHostory();
-  }, [])
+  }, [isReload])
 
 
   return (

@@ -27,6 +27,9 @@ export default function PrestadorPage() {
   const { user } = useAuthStore()
   const [providerServices, setPrividerServices] = useState<IServicesSavedDTO[]>()
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [dateBooking, setDateBooking] = useState();
+  const [serviceId, setServiceId] = useState<string>();
+  const [price, setPrice] = useState<number>();
 
   const loadServicesProvider = async () => {
     try {
@@ -38,29 +41,33 @@ export default function PrestadorPage() {
     }
   }
 
-  const handleContractService = async (serviceId: string, price: number) => {
+
+  const handleOpenDialog = (serviceId: string, price: number) =>{
+    setPrice(price)
+    setServiceId(serviceId)
+    setIsDialogOpen(true)
+  }
+  
+  const handleContractService = async () => {
     if (!user) {
       router.replace("/login")
       return
     }
 
-    try {
-      await BookingsServices.create({
-        clientId: user.userId,
-        providerId: params.id as string,
-        serviceId: serviceId || '',
-        price: price
-      })
+      try {
+        await BookingsServices.create({
+          clientId: user.userId,
+          providerId: params.id as string,
+          serviceId: serviceId || '',
+          dateBooking: new Date(dateBooking!),
+          price: price!
+        })
+          setIsDialogOpen(false)
+        router.push("/servicos")
 
-      router.push("servicos")
-
-    } catch (error: any) {
-      if (error.message) {
+      } catch (error: any) {
         alert(error.message)
-      } else {
-        setIsDialogOpen(true)
       }
-    }
 
   }
 
@@ -133,7 +140,7 @@ export default function PrestadorPage() {
                 <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{service.description}</p>
                 <div className="flex items-center justify-between">
                   <p className="text-2xl font-bold text-primary">{new Intl.NumberFormat("AOA", { style: "currency", currency: "AOA" }).format(service.price)}</p>
-                  <Button onClick={() => handleContractService(service.id, service.price)}>Contratar</Button>
+                  <Button onClick={() => handleOpenDialog(service.id,service.price)}>Contratar</Button>
                 </div>
               </CardContent>
             </Card>
@@ -143,9 +150,11 @@ export default function PrestadorPage() {
 
       <DialogComponent
         title={"Confirmar Contratação"}
-        description={"Você está prestes a solicitar este serviço. O prestador entrará em contato para combinar os detalhes."}
-        confirmContract={() => setIsDialogOpen(false)}
+        description={"Você está prestes a solicitar este serviço. Informe a data e o prestador entrará em contato para combinar os detalhes."}
+        confirmContract={handleContractService}
+        setDateBooking={setDateBooking}
         isDialogOpen={isDialogOpen}
+        dateBooking={dateBooking}
         setIsDialogOpen={setIsDialogOpen}
       />
     </div>

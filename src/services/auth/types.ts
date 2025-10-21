@@ -21,4 +21,23 @@ export type IUserAuth = {
     token: string;
 }
 
+export type IUserSavedDTO = {
+    id: string;
+    fullname: string;
+    email: string;
+    nif: string;
+    password: string;
+    role: 'CLIENT' | 'PROVIDER';
+    createdAt: Date;
+    updatedAt: Date;
+    client: {
+        id: string;
+        balance: number;
+    } | null;
+    provider: {
+        id: string;
+        balance: number;
+    } | null;
+    
+}
 
